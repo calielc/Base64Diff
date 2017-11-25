@@ -2,6 +2,8 @@ using RestSharp;
 
 namespace Caliel.Base64Diff.Api.Tests.Integration.ApiSDK {
     internal abstract class ApiResource {
+        public const string Host = "http://localhost:63634";
+
         private readonly RestClient _client;
 
         protected ApiResource(string baseUri) {

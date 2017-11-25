@@ -9,7 +9,7 @@ namespace Caliel.Base64Diff.Api.Tests.Integration {
 
         [TestInitialize]
         public void SetUp() {
-            _resource = new DiffApiResource("http://localhost:63635/v1/diff/");
+            _resource = new DiffApiResource($"{ApiResource.Host}/v1/diff/");
         }
 
         [TestMethod]
@@ -18,25 +18,20 @@ namespace Caliel.Base64Diff.Api.Tests.Integration {
             var response = _resource.PostLeft(id, "Caliel Lima da Costa");
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, nameof(response.StatusCode));
-            Assert.AreEqual<string>(id, response.Content, nameof(response.Content));
+            Assert.AreEqual(id, response.Content, nameof(response.Content));
         }
 
         [TestMethod]
-        public void Should_return_badRequest_when_sent_no_content_to_left() {
+        [DataRow(null)]
+        [DataRow("")]
+        [DataRow(" ")]
+        [DataRow("82349lfks")]
+        public void Should_return_badRequest_when_sent_invalid_content_to_left(string base64String) {
             const string id = "def";
-            var response = _resource.PostLeft(id, string.Empty);
+            var response = _resource.PostLeft(id, new DiffApiResource.PostModel(base64String));
 
             Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode, nameof(response.StatusCode));
-            Assert.AreEqual<string>(id, response.Content, nameof(response.Content));
-        }
-
-        [TestMethod]
-        public void Should_return_badRequest_when_sent_invalid_content_to_left() {
-            const string id = "def";
-            var response = _resource.PostLeft(id, new DiffApiResource.PostModel("82349lfks"));
-
-            Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode, nameof(response.StatusCode));
-            Assert.AreEqual<string>(id, response.Content, nameof(response.Content));
+            Assert.AreEqual(id, response.Content, nameof(response.Content));
         }
 
         [TestMethod]
@@ -45,25 +40,20 @@ namespace Caliel.Base64Diff.Api.Tests.Integration {
             var response = _resource.PostRight(id, "Caliel Lima da Costa");
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, nameof(response.StatusCode));
-            Assert.AreEqual<string>(id, response.Content, nameof(response.Content));
+            Assert.AreEqual(id, response.Content, nameof(response.Content));
         }
 
         [TestMethod]
-        public void Should_return_badRequest_when_sent_no_content_to_right() {
+        [DataRow(null)]
+        [DataRow("")]
+        [DataRow(" ")]
+        [DataRow("82349lfks")]
+        public void Should_return_badRequest_when_sent_invalid_content_to_right(string base64String) {
             const string id = "def";
-            var response = _resource.PostRight(id, string.Empty);
+            var response = _resource.PostRight(id, new DiffApiResource.PostModel(base64String));
 
             Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode, nameof(response.StatusCode));
-            Assert.AreEqual<string>(id, response.Content, nameof(response.Content));
-        }
-
-        [TestMethod]
-        public void Should_return_badRequest_when_sent_invalid_content_to_right() {
-            const string id = "def";
-            var response = _resource.PostRight(id, new DiffApiResource.PostModel("Ajdksajdsak"));
-
-            Assert.AreEqual(HttpStatusCode.BadRequest, response.StatusCode, nameof(response.StatusCode));
-            Assert.AreEqual<string>(id, response.Content, nameof(response.Content));
+            Assert.AreEqual(id, response.Content, nameof(response.Content));
         }
 
         [TestMethod]
@@ -72,7 +62,7 @@ namespace Caliel.Base64Diff.Api.Tests.Integration {
             var response = _resource.Get<string>(id);
 
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode, nameof(response.StatusCode));
-            Assert.AreEqual<string>(id, response.Content, nameof(response.Content));
+            Assert.AreEqual(id, response.Content, nameof(response.Content));
         }
 
         [TestMethod]
@@ -83,7 +73,7 @@ namespace Caliel.Base64Diff.Api.Tests.Integration {
             var response = _resource.Get<string>(id);
 
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode, nameof(response.StatusCode));
-            Assert.AreEqual<string>(id, response.Content, nameof(response.Content));
+            Assert.AreEqual(id, response.Content, nameof(response.Content));
         }
 
         [TestMethod]
@@ -94,35 +84,41 @@ namespace Caliel.Base64Diff.Api.Tests.Integration {
             var response = _resource.Get<string>(id);
 
             Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode, nameof(response.StatusCode));
-            Assert.AreEqual<string>(id, response.Content, nameof(response.Content));
+            Assert.AreEqual(id, response.Content, nameof(response.Content));
         }
 
         [TestMethod]
-        public void Should_return_ok_and_AreEquals() {
+        [DataRow("Caliel", "Caliel")]
+        [DataRow("costa", "costa")]
+        public void Should_return_ok_and_AreEquals(string left, string right) {
             const string id = "fsadfsda";
-            _resource.PostLeft(id, "Caliel");
-            _resource.PostRight(id, "Caliel");
+            _resource.PostLeft(id, left);
+            _resource.PostRight(id, right);
 
             var response = _resource.Get<DiffApiResource.GetModel>(id);
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, nameof(response.StatusCode));
 
-            Assert.AreEqual<string>("AreEquals", response.Content.Situation, nameof(DiffApiResource.GetModel.Situation));
-            Assert.IsNull(response.Content.Diffs, nameof(DiffApiResource.GetModel.Diffs));
+            var content = response.Content;
+            Assert.AreEqual("AreEquals", content.Similarity, nameof(content.Similarity));
+            Assert.IsNull(content.Diffs, nameof(content.Diffs));
         }
 
         [TestMethod]
-        public void Should_return_ok_and_NotEqualSize() {
+        [DataRow("Caliel", "Calie")]
+        [DataRow("Calie", "Caliel")]
+        public void Should_return_ok_and_NotEqualSize(string left, string right) {
             const string id = "4231423";
-            _resource.PostLeft(id, "Caliel");
-            _resource.PostRight(id, "Calie");
+            _resource.PostLeft(id, left);
+            _resource.PostRight(id, right);
 
             var response = _resource.Get<DiffApiResource.GetModel>(id);
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, nameof(response.StatusCode));
 
-            Assert.AreEqual<string>("NotEqualSize", response.Content.Situation, nameof(DiffApiResource.GetModel.Situation));
-            Assert.IsNull(response.Content.Diffs, nameof(DiffApiResource.GetModel.Diffs));
+            var responseContent = response.Content;
+            Assert.AreEqual("NotEqualSize", responseContent.Similarity, nameof(responseContent.Similarity));
+            Assert.IsNull(responseContent.Diffs, nameof(responseContent.Diffs));
         }
 
         [TestMethod]
@@ -140,8 +136,10 @@ namespace Caliel.Base64Diff.Api.Tests.Integration {
             var response = _resource.Get<DiffApiResource.GetModel>(id);
 
             Assert.AreEqual(HttpStatusCode.OK, response.StatusCode, nameof(response.StatusCode));
-            Assert.AreEqual<string>("SameSize", response.Content.Situation, nameof(DiffApiResource.GetModel.Situation));
-            CollectionAssert.AreEqual(expectedDiffs, response.Content.Diffs, nameof(DiffApiResource.GetModel.Diffs));
+
+            var responseContent = response.Content;
+            Assert.AreEqual("SameSize", responseContent.Similarity, nameof(responseContent.Similarity));
+            CollectionAssert.AreEqual(expectedDiffs, responseContent.Diffs, nameof(responseContent.Diffs));
         }
     }
 

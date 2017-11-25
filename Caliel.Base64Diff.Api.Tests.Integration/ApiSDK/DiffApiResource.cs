@@ -27,7 +27,7 @@ namespace Caliel.Base64Diff.Api.Tests.Integration.ApiSDK {
         }
 
         public struct GetModel {
-            public string Situation { get; set; }
+            public string Similarity { get; set; }
             public OffsetLengthModel[] Diffs { get; set; }
         }
 
