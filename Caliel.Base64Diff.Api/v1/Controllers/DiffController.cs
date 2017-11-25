@@ -47,9 +47,14 @@ namespace Caliel.Base64Diff.Api.v1.Controllers {
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.InternalServerError)]
         public ActionResult Get(string id) {
-            var similarity = _service.Load(id)?.Similarity;
-            if (similarity is null) {
+            var model = _service.Load(id);
+            if (model is null) {
                 return NotFound(id);
+            }
+
+            var similarity = model.Similarity;
+            if (similarity is null) {
+                return NoContent();
             }
 
             return Ok(new DiffViewModel {

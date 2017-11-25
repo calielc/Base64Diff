@@ -1,4 +1,5 @@
-﻿using Caliel.Base64Diff.Domain.Diff;
+﻿using System.Collections.Generic;
+using Caliel.Base64Diff.Domain.Diff;
 using Caliel.Base64Diff.Domain.Similarity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
@@ -107,6 +108,58 @@ namespace Caliel.Base64Diff.Domain.Tests.Diff {
 
             _serviceMock.Verify(mock => mock.Save(It.IsAny<string>(), It.IsAny<DiffData>()), Times.Once());
             _serviceMock.Verify(mock => mock.Save(id, It.Is<DiffData>(actual => actual.Left == left && actual.Right == right)));
+        }
+
+        private static IEnumerable<object[]> CasesEquals() {
+            var service = new Mock<DiffService>(MockBehavior.Strict).Object;
+            const string id = "dsgfdsfsdfasdf";
+            var left = new byte[] { 1, 2 };
+            var right = new byte[] { 5, 6 };
+            var model = new DiffModel(service, id).SetLeft(left).SetRight(right);
+
+            var servico2 = new Mock<DiffService>(MockBehavior.Strict).Object;
+
+
+            yield return new object[] { true, model, model };
+            yield return new object[] { true, model, new DiffModel(service, id).SetLeft(left).SetRight(right) };
+
+            yield return new object[] { false, model, null };
+            yield return new object[] { false, model, new DiffModel(servico2, id).SetLeft(left).SetRight(right) };
+            yield return new object[] { false, model, new DiffModel(service, "fasdfds").SetLeft(left).SetRight(right) };
+            yield return new object[] { false, model, new DiffModel(service, id).SetLeft(new byte[] { 5 }).SetRight(right) };
+            yield return new object[] { false, model, new DiffModel(service, id).SetLeft(left).SetRight(new byte[] { 5 }) };
+        }
+
+        [TestMethod]
+        [DynamicData(nameof(CasesEquals), DynamicDataSourceType.Method)]
+        public void Should_compare_with_class(bool expected, DiffModel model1, DiffModel model2) {
+            var actual = model1.Equals(model2);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        [DynamicData(nameof(CasesEquals), DynamicDataSourceType.Method)]
+        public void Should_compare_with_object(bool expected, DiffModel model1, DiffModel model2) {
+            var actual = model1.Equals((object)model2);
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        [DynamicData(nameof(CasesEquals), DynamicDataSourceType.Method)]
+        public void Should_compare_with_equal_operator(bool expected, DiffModel model1, DiffModel model2) {
+            var actual = model1 == model2;
+
+            Assert.AreEqual(expected, actual);
+        }
+
+        [TestMethod]
+        [DynamicData(nameof(CasesEquals), DynamicDataSourceType.Method)]
+        public void Should_compare_with_unequal_operator(bool expected, DiffModel model1, DiffModel model2) {
+            var actual = model1 != model2;
+
+            Assert.AreNotEqual(expected, actual);
         }
     }
 }

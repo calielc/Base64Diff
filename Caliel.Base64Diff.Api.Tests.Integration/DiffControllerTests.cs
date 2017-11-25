@@ -73,8 +73,8 @@ namespace Caliel.Base64Diff.Api.Tests.Integration {
 
             var response = _resource.Get<string>(id);
 
-            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode, nameof(response.StatusCode));
-            Assert.AreEqual(id, response.Content, nameof(response.Content));
+            Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode, nameof(response.StatusCode));
+            Assert.IsNull(response.Content, nameof(response.Content));
         }
 
         [TestMethod]
@@ -84,8 +84,8 @@ namespace Caliel.Base64Diff.Api.Tests.Integration {
 
             var response = _resource.Get<string>(id);
 
-            Assert.AreEqual(HttpStatusCode.NotFound, response.StatusCode, nameof(response.StatusCode));
-            Assert.AreEqual(id, response.Content, nameof(response.Content));
+            Assert.AreEqual(HttpStatusCode.NoContent, response.StatusCode, nameof(response.StatusCode));
+            Assert.IsNull(response.Content, nameof(response.Content));
         }
 
         [TestMethod]
