@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Builder;
+using Caliel.Base64Diff.Domain;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -14,6 +15,7 @@ namespace Caliel.Base64Diff.Api {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
             services.AddMvc();
+            DependencyInjection.Instance.Resolve(services);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

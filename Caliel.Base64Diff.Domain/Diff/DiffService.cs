@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 namespace Caliel.Base64Diff.Domain.Diff {
-    public class DiffService : IDiffService {
+    internal class DiffService : IDiffService {
         private static readonly Dictionary<string, DiffData> FakeDB = new Dictionary<string, DiffData>();
 
         public virtual DiffModel Create(string id)

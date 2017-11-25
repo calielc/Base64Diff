@@ -7,7 +7,11 @@ namespace Caliel.Base64Diff.Api.v1.Controllers {
     [Produces("application/json")]
     [Route("v1/diff/{id}")]
     public class DiffController : Controller {
-        private readonly IDiffService _service = new DiffService();
+        private readonly IDiffService _service;
+
+        public DiffController(IDiffService service) {
+            _service = service;
+        }
 
         [HttpPost]
         [Route("left")]

@@ -3,7 +3,7 @@ using System.Diagnostics;
 using Caliel.Base64Diff.Domain.Similarity;
 
 namespace Caliel.Base64Diff.Domain.Diff {
-    public sealed class DiffModel : IEquatable<DiffModel> {
+    public sealed class DiffModel : IDiffModel, IEquatable<DiffModel> {
         internal DiffModel(DiffService service, string id) {
             Debug.Assert(service != null);
 
