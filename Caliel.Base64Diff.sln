@@ -9,6 +9,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Caliel.Base64Diff.Api.Tests
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Caliel.Base64Diff.Api.Tests.Unit", "Caliel.Base64Diff.Api.Tests.Unit\Caliel.Base64Diff.Api.Tests.Unit.csproj", "{47F51B43-1BB6-4BA4-8BAD-2C32F1D90ADD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Caliel.Base64Diff.Domain", "Caliel.Base64Diff.Domain\Caliel.Base64Diff.Domain.csproj", "{FD768D2C-5150-4EDA-8FEC-5497452500CC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Caliel.Base64Diff.Domain.Tests", "Caliel.Base64Diff.Domain.Tests\Caliel.Base64Diff.Domain.Tests.csproj", "{DED3CDF0-882B-4978-BFF2-C4111F5A778D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +31,14 @@ Global
 		{47F51B43-1BB6-4BA4-8BAD-2C32F1D90ADD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{47F51B43-1BB6-4BA4-8BAD-2C32F1D90ADD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{47F51B43-1BB6-4BA4-8BAD-2C32F1D90ADD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FD768D2C-5150-4EDA-8FEC-5497452500CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FD768D2C-5150-4EDA-8FEC-5497452500CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FD768D2C-5150-4EDA-8FEC-5497452500CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FD768D2C-5150-4EDA-8FEC-5497452500CC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DED3CDF0-882B-4978-BFF2-C4111F5A778D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DED3CDF0-882B-4978-BFF2-C4111F5A778D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DED3CDF0-882B-4978-BFF2-C4111F5A778D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DED3CDF0-882B-4978-BFF2-C4111F5A778D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using Caliel.Base64Diff.Api.Bussiness;
+using Caliel.Base64Diff.Domain.Similarity;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 

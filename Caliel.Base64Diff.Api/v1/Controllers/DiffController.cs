@@ -1,15 +1,13 @@
-﻿using System.Collections.Generic;
-using System.Net;
-using Caliel.Base64Diff.Api.Bussiness;
+﻿using System.Net;
 using Caliel.Base64Diff.Api.v1.Models;
+using Caliel.Base64Diff.Domain.Diff;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Caliel.Base64Diff.Api.v1.Controllers {
     [Produces("application/json")]
     [Route("v1/diff/{id}")]
     public class DiffController : Controller {
-        private static readonly Dictionary<string, byte[]> LeftData = new Dictionary<string, byte[]>();
-        private static readonly Dictionary<string, byte[]> RightData = new Dictionary<string, byte[]>();
+        private readonly IDiffService _service = new DiffService();
 
         [HttpPost]
         [Route("left")]
@@ -20,7 +18,7 @@ namespace Caliel.Base64Diff.Api.v1.Controllers {
                 return BadRequest(id);
             }
 
-            LeftData[id] = inputModel.GetBytes();
+            _service.LoadOrCreate(id).SetLeft(inputModel.GetBytes()).Save();
 
             return Ok(id);
         }
@@ -34,7 +32,7 @@ namespace Caliel.Base64Diff.Api.v1.Controllers {
                 return BadRequest(id);
             }
 
-            RightData[id] = inputModel.GetBytes();
+            _service.LoadOrCreate(id).SetRight(inputModel.GetBytes()).Save();
 
             return Ok(id);
         }
@@ -45,15 +43,14 @@ namespace Caliel.Base64Diff.Api.v1.Controllers {
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.InternalServerError)]
         public ActionResult Get(string id) {
-            if (LeftData.ContainsKey(id) == false || RightData.ContainsKey(id) == false) {
+            var similarity = _service.Load(id)?.Similarity;
+            if (similarity is null) {
                 return NotFound(id);
             }
 
-            var arrayComparison = new BytesSimilarity(LeftData[id], RightData[id]);
-
             return Ok(new DiffViewModel {
-                Similarity = arrayComparison.Similarity,
-                Diffs = arrayComparison.Diffs
+                Similarity = similarity.Similarity,
+                Diffs = similarity.Diffs
             });
         }
     }

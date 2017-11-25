@@ -1,4 +1,4 @@
-﻿namespace Caliel.Base64Diff.Api.Bussiness {
+﻿namespace Caliel.Base64Diff.Domain.Similarity {
     public enum ArraySimilarities {
         AreEquals,
         NotEqualSize,

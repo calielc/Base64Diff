@@ -1,13 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 
-namespace Caliel.Base64Diff.Api.Bussiness {
-    public sealed class BytesSimilarity {
+namespace Caliel.Base64Diff.Domain.Similarity {
+    public sealed class BytesSimilarity : ISimilarity {
         public BytesSimilarity(byte[] left, byte[] right) {
             Left = left;
             Right = right;
 
-            if (left.Length != right.Length) {
+            if (left is null || right is null) {
+                Similarity = ArraySimilarities.NotEqualSize;
+            }
+            else if (left.Length != right.Length) {
                 Similarity = ArraySimilarities.NotEqualSize;
             }
             else if (left.SequenceEqual(right)) {
@@ -24,7 +27,7 @@ namespace Caliel.Base64Diff.Api.Bussiness {
 
         public ArraySimilarities Similarity { get; }
 
-        public ArrayDifference[] Diffs { get; }
+        public IReadOnlyCollection<ArrayDifference> Diffs { get; }
 
         private IEnumerable<ArrayDifference> BuildDiffs() {
             var offset = 0;
@@ -34,17 +37,15 @@ namespace Caliel.Base64Diff.Api.Bussiness {
                     continue;
                 }
 
-                var length = 1;
                 var idx = offset + 1;
                 while (idx < Left.Length) {
                     if (Left[idx] == Right[idx]) {
-                        yield return new ArrayDifference(offset, length);
+                        yield return new ArrayDifference(offset, idx - offset);
 
                         offset = idx;
                         break;
                     }
 
-                    length += 1;
                     idx += 1;
                 }
             }

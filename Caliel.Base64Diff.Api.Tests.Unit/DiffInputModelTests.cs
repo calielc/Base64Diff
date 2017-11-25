@@ -5,7 +5,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Caliel.Base64Diff.Api.Tests.Unit {
     [TestClass]
-    public class DiffInputModelTests {
+    public sealed class DiffInputModelTests {
         [TestMethod]
         [DataRow("Caliel")]
         [DataRow("Costa")]
