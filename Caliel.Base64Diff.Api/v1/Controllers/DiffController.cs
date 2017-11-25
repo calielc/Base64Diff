@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
+using System.Text.RegularExpressions;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Rewrite.Internal.UrlMatches;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
@@ -19,9 +19,12 @@ namespace Caliel.Base64Diff.Api.v1.Controllers {
         [Route("left")]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(string), (int)HttpStatusCode.InternalServerError)]
         public ActionResult Left(string id, [FromBody] InputModel inputModel) {
-            LeftData[id] = inputModel.Bytes;
+            if (inputModel.IsValid() == false) {
+                return BadRequest(id);
+            }
+
+            LeftData[id] = inputModel.GetBytes();
 
             return Ok(id);
         }
@@ -30,9 +33,12 @@ namespace Caliel.Base64Diff.Api.v1.Controllers {
         [Route("right")]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.BadRequest)]
-        [ProducesResponseType(typeof(string), (int)HttpStatusCode.InternalServerError)]
         public ActionResult Right(string id, [FromBody]InputModel inputModel) {
-            RightData[id] = inputModel.Bytes;
+            if (inputModel.IsValid() == false) {
+                return BadRequest(id);
+            }
+
+            RightData[id] = inputModel.GetBytes();
 
             return Ok(id);
         }
@@ -43,6 +49,10 @@ namespace Caliel.Base64Diff.Api.v1.Controllers {
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.InternalServerError)]
         public ActionResult Get(string id) {
+            if (LeftData.ContainsKey(id) == false || RightData.ContainsKey(id) == false) {
+                return NotFound(id);
+            }
+
             var left = LeftData[id];
             var right = RightData[id];
 
@@ -92,13 +102,26 @@ namespace Caliel.Base64Diff.Api.v1.Controllers {
             }
         }
 
-
         public enum Situations { AreEquals, NotEqualSize, SameSize }
 
-        public class InputModel {
+        public struct InputModel {
             public string Data { get; set; }
 
-            public byte[] Bytes => Data == null ? null : Convert.FromBase64String(Data);
+            public bool IsValid() {
+                var isEmpty = string.IsNullOrWhiteSpace(Data);
+                if (isEmpty) {
+                    return false;
+                }
+
+                var regEx = new Regex(@"^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$", RegexOptions.Compiled);
+                if (regEx.IsMatch(Data) == false) {
+                    return false;
+                }
+
+                return true;
+            }
+
+            public byte[] GetBytes() => Convert.FromBase64String(Data);
         }
 
         public struct ViewModel {
