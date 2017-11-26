@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Caliel.Base64Diff.Domain {
     public sealed class DependencyInjection {
+        public static readonly DependencyInjection Instance = new DependencyInjection();
+
         private DependencyInjection() { }
 
         public void Resolve(IServiceCollection services, Config config) {
@@ -12,8 +14,6 @@ namespace Caliel.Base64Diff.Domain {
 
             services.AddTransient<IDiffService, DiffService>();
         }
-
-        public static readonly DependencyInjection Instance = new DependencyInjection();
 
         public struct Config {
             public string BasePath { get; set; }

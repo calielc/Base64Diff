@@ -13,6 +13,13 @@ namespace Caliel.Base64Diff.Api.v1.Controllers {
             _service = service;
         }
 
+        /// <summary>
+        /// Set Left side of Id
+        /// </summary>
+        /// <param name="id">id</param>
+        /// <param name="inputModel">content</param>
+        /// <returns>Received Id</returns>
+        /// <response code="400">if base64 data is missing or invalid</response>
         [HttpPost]
         [Route("left")]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
@@ -27,6 +34,13 @@ namespace Caliel.Base64Diff.Api.v1.Controllers {
             return Ok(id);
         }
 
+        /// <summary>
+        /// Set right side of Id
+        /// </summary>
+        /// <param name="id">id</param>
+        /// <param name="inputModel">body</param>
+        /// <returns>Received Id</returns>
+        /// <response code="400">if base64 data is missing or invalid</response>
         [HttpPost]
         [Route("right")]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
@@ -41,11 +55,18 @@ namespace Caliel.Base64Diff.Api.v1.Controllers {
             return Ok(id);
         }
 
+        /// <summary>
+        /// Return diff-ed of Id
+        /// </summary>
+        /// <param name="id">id</param>
+        /// <returns></returns>
+        /// <response code="204">Id was found but one side is missing</response>
+        /// <response code="404">Id was not found</response>        
         [HttpGet]
         [Route("")]
         [ProducesResponseType(typeof(DiffViewModel), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.NotFound)]
-        [ProducesResponseType(typeof(string), (int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(typeof(void), (int)HttpStatusCode.NoContent)]
         public ActionResult Get(string id) {
             var model = _service.Load(id);
             if (model is null) {

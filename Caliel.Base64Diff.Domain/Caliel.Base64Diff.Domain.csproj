@@ -7,6 +7,7 @@
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <LangVersion>latest</LangVersion>
+    <DocumentationFile>bin\Debug\netcoreapp2.0\Caliel.Base64Diff.Domain.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>

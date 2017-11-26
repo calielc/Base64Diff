@@ -1,10 +1,15 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Text.RegularExpressions;
 
 namespace Caliel.Base64Diff.Api.v1.Models {
     public struct DiffInputModel {
         private static readonly Regex RegEx = new Regex(@"^([A-Za-z0-9+/]{4})*([A-Za-z0-9+/]{4}|[A-Za-z0-9+/]{3}=|[A-Za-z0-9+/]{2}==)$", RegexOptions.Compiled);
 
+        /// <summary>
+        /// Base64 encoded data
+        /// </summary>
+        [Required]
         public string Data { get; set; }
 
         public bool IsValid() {
