@@ -1,7 +1,7 @@
 using System;
 using System.Text;
 
-namespace Caliel.Base64Diff.Api.Tests.Integration.ApiSDK {
+namespace Caliel.Base64Diff.Tests.ApiSDK {
     internal class DiffApiResource : ApiResource {
         public DiffApiResource(string baseUri) : base(baseUri) { }
 

@@ -3,7 +3,7 @@ using System.Text;
 using Caliel.Base64Diff.Api.v1.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Caliel.Base64Diff.Api.Tests.Unit {
+namespace Caliel.Base64Diff.Api.Tests {
     [TestClass]
     public sealed class DiffInputModelTests {
         [TestMethod]

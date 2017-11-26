@@ -1,20 +1,26 @@
 using System;
 using System.Net;
-using Caliel.Base64Diff.Api.Tests.Integration.ApiSDK;
+using Caliel.Base64Diff.Tests.ApiSDK;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Caliel.Base64Diff.Api.Tests.Integration {
+namespace Caliel.Base64Diff.Tests {
     [TestClass]
     public sealed class DiffControllerTests {
         private DiffApiResource _resource;
 
         [TestInitialize]
         public void SetUp() {
-            const string directory = "C:\\Temp\\diff";
-            System.IO.Directory.Delete(directory, true);
-            System.IO.Directory.CreateDirectory(directory);
+            ResetDatabase();
 
             _resource = new DiffApiResource($"{ApiResource.Host}/v1/diff/");
+        }
+
+        private static void ResetDatabase() {
+            const string directory = "C:\\Temp\\diff";
+            if (System.IO.Directory.Exists(directory)) {
+                System.IO.Directory.Delete(directory, true);
+            }
+            System.IO.Directory.CreateDirectory(directory);
         }
 
         [TestMethod]

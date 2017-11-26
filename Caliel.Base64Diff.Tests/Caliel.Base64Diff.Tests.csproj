@@ -5,9 +5,9 @@
 
     <IsPackable>false</IsPackable>
 
-    <AssemblyName>Caliel.Base64Diff.Api.Tests.Integration</AssemblyName>
+    <AssemblyName>Caliel.Base64Diff.Tests</AssemblyName>
 
-    <RootNamespace>Caliel.Base64Diff.Api.Tests.Integration</RootNamespace>
+    <RootNamespace>Caliel.Base64Diff.Tests</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

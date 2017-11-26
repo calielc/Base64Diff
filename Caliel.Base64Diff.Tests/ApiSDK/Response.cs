@@ -1,6 +1,6 @@
 using System.Net;
 
-namespace Caliel.Base64Diff.Api.Tests.Integration.ApiSDK {
+namespace Caliel.Base64Diff.Tests.ApiSDK {
     public class Response<T> {
         public Response(HttpStatusCode statusCode, T content) {
             StatusCode = statusCode;

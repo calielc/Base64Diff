@@ -1,6 +1,6 @@
 using RestSharp;
 
-namespace Caliel.Base64Diff.Api.Tests.Integration.ApiSDK {
+namespace Caliel.Base64Diff.Tests.ApiSDK {
     internal abstract class ApiResource {
         public const string Host = "http://localhost:63634";
 

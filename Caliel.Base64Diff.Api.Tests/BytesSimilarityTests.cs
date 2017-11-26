@@ -3,7 +3,7 @@ using System.Text;
 using Caliel.Base64Diff.Domain.Similarity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Caliel.Base64Diff.Api.Tests.Unit {
+namespace Caliel.Base64Diff.Api.Tests {
     [TestClass]
     public sealed class BytesSimilarityTests {
         [TestMethod]
