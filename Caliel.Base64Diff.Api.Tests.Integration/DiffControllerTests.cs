@@ -10,6 +10,10 @@ namespace Caliel.Base64Diff.Api.Tests.Integration {
 
         [TestInitialize]
         public void SetUp() {
+            const string directory = "C:\\Temp\\diff";
+            System.IO.Directory.Delete(directory, true);
+            System.IO.Directory.CreateDirectory(directory);
+
             _resource = new DiffApiResource($"{ApiResource.Host}/v1/diff/");
         }
 

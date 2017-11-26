@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Caliel.Base64Diff.Data;
 using Caliel.Base64Diff.Domain.Diff;
 using Caliel.Base64Diff.Domain.Similarity;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -11,7 +12,7 @@ namespace Caliel.Base64Diff.Domain.Tests.Diff {
 
         [TestInitialize]
         public void SetUp() {
-            _serviceMock = new Mock<DiffService>(MockBehavior.Strict);
+            _serviceMock = new Mock<DiffService>(MockBehavior.Strict, null);
         }
 
         [TestMethod]
@@ -85,7 +86,7 @@ namespace Caliel.Base64Diff.Domain.Tests.Diff {
             var left = new byte[] { 4, 5, 6 };
             var right = new byte[] { 3, 8, 7, 9 };
 
-            var actual = model.SetData(new DiffData {
+            var actual = model.SetData(new DiffContent(id) {
                 Left = left,
                 Right = right
             });
@@ -97,7 +98,7 @@ namespace Caliel.Base64Diff.Domain.Tests.Diff {
 
         [TestMethod]
         public void Should_save_data() {
-            _serviceMock.Setup(mock => mock.Save(It.IsAny<string>(), It.IsAny<DiffData>()));
+            _serviceMock.Setup(mock => mock.Save(It.IsAny<string>(), It.IsAny<DiffContent>()));
 
             const string id = "dsgfdsfsdfasdf";
             var left = new byte[] { 4, 5, 6 };
@@ -106,18 +107,18 @@ namespace Caliel.Base64Diff.Domain.Tests.Diff {
 
             model.Save();
 
-            _serviceMock.Verify(mock => mock.Save(It.IsAny<string>(), It.IsAny<DiffData>()), Times.Once());
-            _serviceMock.Verify(mock => mock.Save(id, It.Is<DiffData>(actual => actual.Left == left && actual.Right == right)));
+            _serviceMock.Verify(mock => mock.Save(It.IsAny<string>(), It.IsAny<DiffContent>()), Times.Once());
+            _serviceMock.Verify(mock => mock.Save(id, It.Is<DiffContent>(actual => actual.Left == left && actual.Right == right)));
         }
 
         private static IEnumerable<object[]> CasesEquals() {
-            var service = new Mock<DiffService>(MockBehavior.Strict).Object;
+            var service = new Mock<DiffService>(MockBehavior.Strict, null).Object;
             const string id = "dsgfdsfsdfasdf";
             var left = new byte[] { 1, 2 };
             var right = new byte[] { 5, 6 };
             var model = new DiffModel(service, id).SetLeft(left).SetRight(right);
 
-            var servico2 = new Mock<DiffService>(MockBehavior.Strict).Object;
+            var servico2 = new Mock<DiffService>(MockBehavior.Strict, null).Object;
 
 
             yield return new object[] { true, model, model };

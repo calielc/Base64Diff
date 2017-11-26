@@ -15,7 +15,9 @@ namespace Caliel.Base64Diff.Api {
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services) {
             services.AddMvc();
-            DependencyInjection.Instance.Resolve(services);
+            DependencyInjection.Instance.Resolve(services, new DependencyInjection.Config {
+                BasePath = "c:\\Temp"
+            });
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

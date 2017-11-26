@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using Caliel.Base64Diff.Data;
 using Caliel.Base64Diff.Domain.Similarity;
 
 namespace Caliel.Base64Diff.Domain.Diff {
@@ -40,15 +41,15 @@ namespace Caliel.Base64Diff.Domain.Diff {
         }
 
         public void Save() {
-            Owner.Save(Id, new DiffData {
+            Owner.Save(Id, new DiffContent(Id) {
                 Left = Left,
                 Right = Right
             });
         }
 
-        internal DiffModel SetData(DiffData data) {
-            Left = data.Left;
-            Right = data.Right;
+        internal DiffModel SetData(DiffContent diffContent) {
+            Left = diffContent.Left;
+            Right = diffContent.Right;
 
             return this;
         }
