@@ -17,19 +17,19 @@ namespace Caliel.Base64Diff.Api.v1.Controllers {
         /// Set Left side of Id
         /// </summary>
         /// <param name="id">id</param>
-        /// <param name="inputModel">content</param>
-        /// <returns>Received Id</returns>
-        /// <response code="400">if base64 data is missing or invalid</response>
+        /// <param name="input">content</param>
+        /// <returns>received Id</returns>
+        /// <response code="400">Base64 data is missing or invalid</response>
         [HttpPost]
         [Route("left")]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.BadRequest)]
-        public ActionResult Left(string id, [FromBody] DiffInputModel inputModel) {
-            if (inputModel.IsValid() == false) {
+        public ActionResult Left(string id, [FromBody] DiffInputModel input) {
+            if (input.IsValid() == false) {
                 return BadRequest(id);
             }
 
-            _service.LoadOrCreate(id).SetLeft(inputModel.GetBytes()).Save();
+            _service.LoadOrCreate(id).SetLeft(input.GetBytes()).Save();
 
             return Ok(id);
         }
@@ -38,19 +38,19 @@ namespace Caliel.Base64Diff.Api.v1.Controllers {
         /// Set right side of Id
         /// </summary>
         /// <param name="id">id</param>
-        /// <param name="inputModel">body</param>
-        /// <returns>Received Id</returns>
-        /// <response code="400">if base64 data is missing or invalid</response>
+        /// <param name="input">content</param>
+        /// <returns>received Id</returns>
+        /// <response code="400">Base64 data is missing or invalid</response>
         [HttpPost]
         [Route("right")]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(string), (int)HttpStatusCode.BadRequest)]
-        public ActionResult Right(string id, [FromBody] DiffInputModel inputModel) {
-            if (inputModel.IsValid() == false) {
+        public ActionResult Right(string id, [FromBody] DiffInputModel input) {
+            if (input.IsValid() == false) {
                 return BadRequest(id);
             }
 
-            _service.LoadOrCreate(id).SetRight(inputModel.GetBytes()).Save();
+            _service.LoadOrCreate(id).SetRight(input.GetBytes()).Save();
 
             return Ok(id);
         }
